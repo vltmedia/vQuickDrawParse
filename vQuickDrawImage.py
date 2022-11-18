@@ -6,7 +6,7 @@
 import os, json
 
 from helpers.DictClass import DictClass
-# from averaging import runAveraging
+from averaging import runAveraging
 
 class vQuickDrawImage:
     def __init__(self, filePath, maxLoad = 500):
