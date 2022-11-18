@@ -26,7 +26,7 @@ v = 0
 ```
 
 # Blender Addon
-![Image](blender\vQuickDrawDraw\media\vQuickDraw_DrawPanel.jpg)
+![Image](.\blender\vQuickDrawDraw\media\vQuickDraw_DrawPanel.jpg)
 
 ## Description
 Draw the drawings in an ```.ndjson``` to a max count as Blender Curves.
