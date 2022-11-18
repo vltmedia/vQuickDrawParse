@@ -24,3 +24,12 @@ v = 0
 # drawingPs = vQuickDraw_.getDrawingPoints(0)
 # lines = vQuickDraw_.getLinesAsNumpy(0)
 ```
+
+# Blender Addon
+![Image](blender\vQuickDrawDraw\media\vQuickDraw_DrawPanel.jpg)
+
+## Description
+Draw the drawings in an ```.ndjson``` to a max count as Blender Curves.
+## Installation
+The Blender addon is provided in the blender directory of this codebase, just zip it up.
+Go to this link for a tutorial on how to install a Blender addon [LINK](https://github.com/rlguy/Blender-FLIP-Fluids/wiki/Addon-Installation-and-Uninstallation).
