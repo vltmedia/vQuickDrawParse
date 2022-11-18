@@ -1,0 +1,5 @@
+*.ndjson
+*.png
+*.jpg
+*.zip
+*.pyc
