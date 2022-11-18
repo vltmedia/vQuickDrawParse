@@ -31,5 +31,6 @@ v = 0
 ## Description
 Draw the drawings in an ```.ndjson``` to a max count as Blender Curves.
 ## Installation
-The Blender addon is provided in the blender directory of this codebase, just zip it up.
+The Blender addon is provided in the blender directory of this codebase, just zip it up, or the Releases area of this Github Repo.
+
 Go to this link for a tutorial on how to install a Blender addon [LINK](https://github.com/rlguy/Blender-FLIP-Fluids/wiki/Addon-Installation-and-Uninstallation).
