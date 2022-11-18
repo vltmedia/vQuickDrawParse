@@ -1,5 +1,5 @@
 *.ndjson
-# *.png
+*/*.png
 # *.jpg
 *.zip
 *.pyc

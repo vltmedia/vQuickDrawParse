@@ -1,5 +1,6 @@
 import os, numpy, PIL, glob
 from PIL import Image
+import numpy as np
 
 def runAveraging(inputFolder, outputFile, showImage = True):
     # Access all PNG files in directory
@@ -28,7 +29,7 @@ def runAveraging(inputFolder, outputFile, showImage = True):
 
     # Round values in array and cast as 8-bit integer
     arr=numpy.array(numpy.round(arr),dtype=numpy.uint8)
-
+    
     # Generate, save and preview final image
     out=Image.fromarray(arr,mode="RGB")
     out.save(outputFile)

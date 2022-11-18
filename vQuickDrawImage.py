@@ -117,10 +117,11 @@ class vQuickDrawImage:
         return False
     
     def saveImages(self, directory, maxCount = 10, width=256, height=256, thickness = 5):
-        if os.path.exists(directory) == False:
-            os.mkdir(directory)
         for indx in range(maxCount):
             savePath = f"{directory}/{self.baseName}_{str(indx).zfill(4)}.png"
+            v= 0
+            if os.path.exists(f"{directory}") == False:
+                os.makedirs(f"{directory}")
             print(f"Drawing Image: {int((indx / maxCount) * 100)}%",savePath )
             img = self.drawImage(indx, width , height, thickness = thickness)
             img.save(savePath)
@@ -172,10 +173,10 @@ class vQuickDrawImage:
 if __name__ == '__main__':
     
     # User Set This
-    inputFolder = f"C:/Users/ethic/Desktop/Classes_Fall2022/ComputationalDesign/finalProject/vQuickDrawParse"
+    inputFolder = f"F:/Projects/CodeDump/GoogleQuickDraw/"
     items = ["bee"]
-    maxLoad = 500
-    saveCount = 500
+    maxLoad = 10
+    saveCount = 10
     
     # User Don't Touch
     for item in items:
@@ -183,7 +184,7 @@ if __name__ == '__main__':
         vQuickDraw_ = vQuickDrawImage(f"{item}.ndjson", maxLoad = maxLoad)
         edges = vQuickDraw_.getLinesAsEdges(0, addZ = True)
         v = 0
-        # vQuickDraw_.saveImages(f"{inputFolder}/{item}", saveCount, thickness = 5)
+        vQuickDraw_.saveImages(f"{inputFolder}/{item}", saveCount, thickness = 5)
         # runAveraging(inputFolder =outputFolder, outputFile = f"{inputFolder}/{item}_Average.png",showImage=False)
     # value = vQuickDraw_.value()
     # drawing = vQuickDraw_.getDrawing(0)
