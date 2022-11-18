@@ -6,7 +6,7 @@
 import os, json
 
 from helpers.DictClass import DictClass
-from averaging import runAveraging
+# from averaging import runAveraging
 
 class vQuickDrawImage:
     def __init__(self, filePath, maxLoad = 500):
@@ -41,6 +41,9 @@ class vQuickDrawImage:
                 outArray.append(DictClass(js))
         self.data = DictClass({"images":outArray})
     
+    def getBasicEdges(self, points):
+        return  [ [i,i+1] for i in range( len(points)-1) ]
+    
     def getDrawing(self, drawingIndex):
         if 0 <= drawingIndex < len(self.data.images):
             return self.data.images[drawingIndex]
@@ -52,6 +55,21 @@ class vQuickDrawImage:
             return drawing.drawing
         return False
     
+    def getBlenderMeshData(self,itemName, drawingIndex):
+        try:
+            import bpy
+            mesh = bpy.data.meshes.new(itemName)
+            verts, edges = self.getMeshData(drawingIndex)
+            mesh.from_pydata(verts, edges = edges, faces=[])
+            mesh.update()
+        except:
+            return "Blender Not Found"
+    
+    def getMeshData(self, drawingIndex):
+        verts = self.getVertices(drawingIndex)
+        edges = self.getBasicEdges(verts)
+        return [verts, edges]
+    
     def getDrawingPoint(self, drawingIndex, pointIndex):
         drawing = self.getDrawing(drawingIndex)
         if drawing:
@@ -59,12 +77,41 @@ class vQuickDrawImage:
             if points:
                 return points[pointIndex]
             
-    def getLinesAsNumpy(self, drawingIndex):
+    def getLinesAsNumpy(self, drawingIndex, addZ = False):
         drawing = self.getDrawing(drawingIndex)
         if drawing:
             lines = []
             for line in drawing.lines:
-                lines.append([(line['start']['x'], line['start']['y']), (line['end']['x'], line['end']['y'])])
+                if addZ == False:
+                    lines.append([(line['start']['x'], line['start']['y']), (line['end']['x'], line['end']['y'])])
+                else:
+                    lines.append([(line['start']['x'], line['start']['y'], 0), (line['end']['x'], line['end']['y'], 0)])
+            return lines
+            # return np.array(lines)
+        return False
+    
+    def getVertices(self, drawingIndex):
+        drawing = self.getDrawing(drawingIndex)
+        if drawing:
+            points = self.getDrawingPoints(drawingIndex)
+            lines = []
+            for point in points:
+                lines.append((point['x'], point['y'], 0))
+                    
+            return lines
+            # return np.array(lines)
+        return False
+    
+    def getLinesAsEdges(self, drawingIndex, addZ = False):
+        drawing = self.getDrawing(drawingIndex)
+        if drawing:
+            lines = []
+            for line in drawing.lines:
+                if addZ == False:
+                    lines.append([[line['start']['x'], line['start']['y']], [line['end']['x'], line['end']['y']]])
+                else:
+                    lines.append([[line['start']['x'], line['start']['y'], 0], [line['end']['x'], line['end']['y'], 0]])
+                    
             return lines
             # return np.array(lines)
         return False
@@ -91,16 +138,42 @@ class vQuickDrawImage:
         for line in lines:
             img1.line(line, fill ="black", width = thickness)
         return img
+    def drawBlenderCurves(self,maxCount = 10, name = "Item"):
+        
+        import bpy
+        new_collection = bpy.data.collections.new(name)
+        bpy.context.scene.collection.children.link(new_collection)
+        for i in range(maxCount):
+            itemName = f"{name}_{str(i).zfill(4)}"
+            verts, edges = self.getMeshData(i)
+            
+            mesh = bpy.data.meshes.new(itemName)
+            mesh.from_pydata(verts, edges = edges, faces=[])
+            mesh.update()
+
+
+            new_object = bpy.data.objects.new(itemName, mesh)
+            # make collection
+            #new_collection = bpy.data.collections.new('new_collection')
+            
+            
+            
+        # add object to scene collection
+            new_collection.objects.link(new_object)
+    
     
     def value(self):
         return self.data
         
+    @staticmethod
+    def getInfo():
+        return "vQuickDrawImage: A class for loading Quick Draw images from a .ndjson from Google's Quick Draw dataset"
     
 if __name__ == '__main__':
     
     # User Set This
     inputFolder = f"C:/Users/ethic/Desktop/Classes_Fall2022/ComputationalDesign/finalProject/vQuickDrawParse"
-    items = ["bush"]
+    items = ["bee"]
     maxLoad = 500
     saveCount = 500
     
@@ -108,8 +181,10 @@ if __name__ == '__main__':
     for item in items:
         outputFolder = f"{inputFolder}/{item}"
         vQuickDraw_ = vQuickDrawImage(f"{item}.ndjson", maxLoad = maxLoad)
-        vQuickDraw_.saveImages(f"{inputFolder}/{item}", saveCount, thickness = 5)
-        runAveraging(inputFolder =outputFolder, outputFile = f"{inputFolder}/{item}_Average.png",showImage=False)
+        edges = vQuickDraw_.getLinesAsEdges(0, addZ = True)
+        v = 0
+        # vQuickDraw_.saveImages(f"{inputFolder}/{item}", saveCount, thickness = 5)
+        # runAveraging(inputFolder =outputFolder, outputFile = f"{inputFolder}/{item}_Average.png",showImage=False)
     # value = vQuickDraw_.value()
     # drawing = vQuickDraw_.getDrawing(0)
     v = 0
