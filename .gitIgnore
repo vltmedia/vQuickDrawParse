@@ -1,5 +1,8 @@
 *.ndjson
 */*.png
+*average*.png
+*arr*.png
+*drawing*.png
 # *.jpg
 *.zip
 *.pyc
