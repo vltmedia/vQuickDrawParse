@@ -9,7 +9,8 @@ from helpers.DictClass import DictClass
 from averaging import runAveraging
 
 class vQuickDrawImage:
-    def __init__(self, filePath, maxLoad = 500):
+    def __init__(self, filePath, maxLoad = 500, scale = 1):
+        self.scale = scale
         self.maxLoad = maxLoad
         self.filePath = filePath
         self.baseName = os.path.basename(os.path.splitext(filePath)[0])
@@ -84,9 +85,9 @@ class vQuickDrawImage:
             lines = []
             for line in drawing.lines:
                 if addZ == False:
-                    lines.append([(line['start']['x'], line['start']['y']), (line['end']['x'], line['end']['y'])])
+                    lines.append([(line['start']['x'] * self.scale, line['start']['y'] * self.scale), (line['end']['x'] * self.scale, line['end']['y'] * self.scale)])
                 else:
-                    lines.append([(line['start']['x'], line['start']['y'], 0), (line['end']['x'], line['end']['y'], 0)])
+                    lines.append([(line['start']['x'] * self.scale, line['start']['y'] * self.scale, 0), (line['end']['x'] * self.scale, line['end']['y'] * self.scale, 0)])
             return lines
             # return np.array(lines)
         return False
