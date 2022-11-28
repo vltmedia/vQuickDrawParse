@@ -39,6 +39,7 @@ class vQuickDrawImage:
                 js['lines'] = lines
                 v = 0
                 outArray.append(DictClass(js))
+        v = 0
         self.data = DictClass({"images":outArray})
     
     def getBasicEdges(self, points):
